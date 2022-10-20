@@ -1,28 +1,36 @@
 /// <reference types="Cypress" />
 
+const locators = require ('../fixtures/locators.json')
+import { Faker, faker } from '@faker-js/faker';
+
 describe ('Login test cases',()  => {
-    it('Go to gallery page', () => {
+   beforeEach('go to gallery page and click on login button', () =>{
+    cy.visit ('')
+    cy.get(locators.header.loginButton).click()
+   })
+    // it('Go to gallery page', () => {
 
-        cy.visit('')
-    } )
+    //     cy.visit('')
+    // } )
 
-    it ('go to login page', () => {
-        cy.get ("a[href='/login']").click ()
+    // it ('go to login page', () => {
+    //     cy.get (locators.header.loginButton).click ()
+    // })
+
+    it ('login with valid credentials and logout', () =>{
+        cy.get(locators.login.emailInput).type ('test@test.com')
+        cy.get (locators.login.passwordInput).type('test1234')
+        cy.get (locators.login.sybmitButton).click()
+        cy.get(locators.header.logoutButton).click ()
     })
 
-    it ('login with valid credentials', () =>{
-        cy.get('#email').type ('test@test.com')
-        cy.get ('#password').type('test1234')
-        cy.get ("button[type='submit']").click()
-    })
-
-    it ('logout', () => {
-        cy.get('a[role="button "]').click ()
-    })
+    // it ('logout', () => {
+    //     cy.get(locators.header.logoutButton).click ()
+    // })
 
     it('login with invalid email', () => {
-        cy.get('#email').type ('testtest.com')
-        cy.get ('#password').type('test1234')
-        cy.get ("button[type='submit']").click()
+        cy.get(locators.login.emailInput).clear().type (faker.internet.email())
+        cy.get (locators.login.passwordInput).clear().type('test1234')
+        cy.get (locators.login.sybmitButton).click()
     })
 } )
